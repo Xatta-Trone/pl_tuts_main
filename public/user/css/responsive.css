@@ -1,0 +1,112 @@
+
+/* Medium Layout: 1280px.
+@media only screen and (min-width: 992px) and (max-width: 1200px) { 
+  
+    
+}
+Tablet Layout: 768px.
+@media only screen and (min-width: 768px) and (max-width: 991px) {  
+	
+}
+Mobile Layout: 320px.
+@media only screen and (max-width: 767px) { 
+ 
+    
+}
+Wide Mobile Layout: 480px.
+@media only screen and (min-width: 480px) and (max-width: 767px) { 
+
+} */
+
+
+/* // Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575px) {
+	
+	html{overflow-x: hidden;}
+	body{font-size: 12px;}
+	.slicknav_menu{display: block;}
+	.nav_area{display: none;}
+	.logo img {height:  35px;}
+	.slicknav_menu {background:  #fff;padding: 8px 0;position: fixed;box-shadow: 0px 3px 6px 3px rgba(0, 0, 0, 0.06);}
+	.slicknav_menu.opened {height:100%; overflow-y: auto;box-sizing: border-box;}
+	.slicknav_menu .slicknav_nav a{color: #333;}
+	.hero_area h2{font-size: 30px;margin-bottom: 20px;}
+	.clock .time{font-size: 44px;line-height: 70px;}
+	.clock .wrapper {margin: 0 4px;font-size: 15px;}
+	.header_text h1{font-size: 28px;}
+	.step_area [class^="col-md-"], .count_section [class^="col-md-"]{margin-bottom:  20px;}
+	.mini_search_area{padding: 30px;}
+	.mini_search_area [class^="col-"]{margin-bottom: 10px;}
+	.quote_section h1{font-size: 30px;}
+	.quote_section span{font-size:15px;padding-left: 30px; }
+	.contact_section [class^="col-"], .contact_page [class^="col-"]{margin: 15px auto;}
+	.hero_title_section{padding: 110px 0 60px;}
+	.hero_title_section h3{font-size: 30px; line-height: 3px;}
+	.hero_title_section p{font-size: 1rem;}
+	.software_content .single_content_section h1{font-size: 30px;}
+	.profile_section .tab-content input{width: 100%;}
+	.profile_section .nav-link.active{height: 100%;}
+   
+ }
+
+/* // Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767px) { 
+	html{overflow-x: hidden;}
+	body{font-size: 13px;}
+	.slicknav_menu{display: block;}
+	.nav_area{display: none;}
+	.logo img {height:  35px;}
+	.slicknav_menu {background:  #fff;padding: 8px 0;position: fixed;box-shadow: 0px 3px 6px 3px rgba(0, 0, 0, 0.06);}
+	.slicknav_menu.opened {height:100%; overflow-y: auto;box-sizing: border-box;}
+	.slicknav_menu .slicknav_nav a{color: #333;}
+	.step_area [class^="col-md-"], .count_section [class^="col-md-"]{margin-bottom:  20px;}
+	.hero_area h2{font-size: 35px;margin-bottom: 0;}
+	.clock .time{font-size: 50px;}
+	.clock .wrapper{font-size: 16px;}
+	.single_count_item i.fa{font-size: 40px;}
+	.single_count_item{font-size: 22px;}
+	.mini_search_area [class^="col-"]{margin-bottom: 10px;}
+	.contact_section [class^="col-"], .contact_page [class^="col-"]{margin: 15px auto;}
+	.hero_title_section{padding: 100px 0;}
+	.hero_title_section p{font-size: 20px;}
+	.hero_title_section span{margin: 20px 0 10px;height: 3px;}
+	.hero_title_section h3{font-size: 30px; line-height: 10px;}
+	.software_content .single_content_section h1{font-size: 25px;}
+	.header_text h1{font-size: 35px;}
+
+ }
+
+/* // Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991px) { 
+	body{font-size: 14px;}
+	.mainmenu li:hover a, .mainmenu li.active a{letter-spacing: 1px;}
+	.mainmenu li a{padding: 8px; font-size: 12px;}
+	.mainmenu li ul a {padding: 6px;padding-left: 10px;}
+	.mainmenu li:hover ul{top: 40px;}
+	.hero_area h2{font-size: 50px;}
+	.clock .time{font-size: 75px;}
+	.clock .wrapper{font-size: 16px;}
+	.single_step_item h4{font-size: 25px;}
+	.single_step_item{font-size: 14px;}
+	.mini_search_area [class^="col-"]{margin-bottom: 10px;}
+	.contact_section [class^="col-"], .contact_page [class^="col-"]{margin: 15px auto;}
+	.hero_title_section h3 {font-size: 40px;line-height: 30px;}
+	.hero_title_section span{margin: 25px 0 5px;}
+	.hero_title_section p{font-size: 22px;}
+	.software_content .single_content_section h1{font-size: 35px;}
+
+ }
+
+/* // Large devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199px) { 
+	html{overflow-x: hidden;}
+	.mainmenu li ul a {padding: 6px;padding-left: 10px;}
+	.single_content_section span{letter-spacing: 0;}
+	.software_content .single_content_section h1{font-size: 35px;}
+ }
+
+/* // Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { 
+
+
+}

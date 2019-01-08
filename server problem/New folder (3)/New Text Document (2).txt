@@ -1,0 +1,1 @@
+ln -s /home/xattabyt/public_html/pl/storage/app/public/ /home/xattabyt/public_html/pl-tuts/

@@ -1,0 +1,25 @@
+<li>
+<a href="{{ route('ce') }}">CE</a>
+<ul>
+	<li>
+		<a href="{{ route('1-1') }}">1-1</a>
+		<ul>
+			<li><a href="{{ route('ce101') }}">CE 101</a></li>
+			<li><a href="{{ route('ce101') }}">CE 101</a></li>
+			<li><a href="{{ route('ce101') }}">CE 101</a></li>
+			<li><a href="{{ route('ce101') }}">CE 101</a></li>
+		</ul>
+	</li>
+	<li><a href="{{ route('1-1') }}">1-2</a></li>
+	<li><a href="{{ route('1-1') }}">2-1</a></li>
+	<li><a href="{{ route('1-1') }}">2-2</a></li>
+	<li><a href="{{ route('1-1') }}">3-1</a></li>
+</ul>
+</li>
+<li><a href="{{ route('ce') }}">MME</a></li>
+<li><a href="{{ route('ce') }}">ME</a></li>
+<li><a href="{{ route('ce') }}">CSE</a></li>
+<li><a href="{{ route('ce') }}">EEE</a></li>
+<li><a href="{{ route('ce') }}">URP</a></li>
+<li><a href="#">Tuts</a></li>
+<li><a href="#">Trending</a></li>

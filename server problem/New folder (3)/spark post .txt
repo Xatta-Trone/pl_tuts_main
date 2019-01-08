@@ -1,0 +1,11 @@
+68aeb5445afadc36ee25bc7092c3641ebea3582a
+
+
+smtp-relay.sendinblue.com 
+587 
+ pltutorialsbuet@gmail.com
+Password
+M7ZKPy5GDmAnt0af
+
+
+MAIL_DRIVER=elastic_email elastic
