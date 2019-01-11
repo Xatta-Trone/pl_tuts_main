@@ -26,7 +26,7 @@
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
-        <li class="treeview">
+        {{-- <li class="treeview">
           <a href="{{ route('admin.home') }}">
             <i class="fa fa-dashboard"></i> 
             <span>Dashboard</span>
@@ -37,8 +37,8 @@
           <ul class="treeview-menu">
             <li><a href="{{ route('admin.home') }}"><i class="fa fa-circle-o"></i>Home</a></li>  
           </ul>
-        </li>
-
+        </li>   --}}
+        <li><a href="{{ route('admin.home') }}"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
         @can('department_show')
           <li class="treeview">
             <a href="#">
