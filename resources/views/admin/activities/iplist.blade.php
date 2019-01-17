@@ -88,105 +88,105 @@
       "order": [[ 0, "desc" ]]
     });
 
-    $(document).on('click','#userLocationModalSwitch', function() {
-      //e.preventDefault();
-      var id = $(this).data('id');
-      var _token = $('input[name="_token"]').val();
-      console.log(id);
-      console.log(_token);
+    // $(document).on('click','#userLocationModalSwitch', function() {
+    //   //e.preventDefault();
+    //   var id = $(this).data('id');
+    //   var _token = $('input[name="_token"]').val();
+    //   console.log(id);
+    //   console.log(_token);
 
 
-      $.ajax({
-        url: '{{route('users.locationById')}}', //route('users.locationById')
-        type: 'POST',
-        data: {id:id,_token:_token},
-        dataType:'json',
-        success: function(data){
-          console.log(data);
-          $.each(data.ip_lists , function(index, val) { 
-            //console.log(index, val)
-            $('#userIpHistory tbody').append(`
-              <tr>
-                  <td>${ formatAMPM(new Date(val['created_at'])) }</td>
-                  <td>${val['user_ip']}</td>
-                  <td>${$.parseJSON(val['location_info']).city}, ${$.parseJSON(val['location_info']).country}</td>
-                  <td>${$.parseJSON(val['location_info']).isp}</td>
-                  <td>${browserInfo($.parseJSON(val['browser_info']))}</td>
-              </tr>
+    //   $.ajax({
+    //     url: '', //route('users.locationById')
+    //     type: 'POST',
+    //     data: {id:id,_token:_token},
+    //     dataType:'json',
+    //     success: function(data){
+    //       console.log(data);
+    //       $.each(data.ip_lists , function(index, val) { 
+    //         //console.log(index, val)
+    //         $('#userIpHistory tbody').append(`
+    //           <tr>
+    //               <td>${ formatAMPM(new Date(val['created_at'])) }</td>
+    //               <td>${val['user_ip']}</td>
+    //               <td>${$.parseJSON(val['location_info']).city}, ${$.parseJSON(val['location_info']).country}</td>
+    //               <td>${$.parseJSON(val['location_info']).isp}</td>
+    //               <td>${browserInfo($.parseJSON(val['browser_info']))}</td>
+    //           </tr>
               
-              `);
-          });
+    //           `);
+    //       });
 
-          $.each(data.activity , function(index, val) { 
-            //console.log(index, val)
-            $('#downloadHistory tbody').append(`
-              <tr>
-                  <td>${ index+1 }</td>
-                  <td>${ formatAMPM(new Date(val['created_at'])) }</td>
-                  <td>${val['activity']}</td>
-                  <td>${val['label']}</td>
-              </tr>
+    //       $.each(data.activity , function(index, val) { 
+    //         //console.log(index, val)
+    //         $('#downloadHistory tbody').append(`
+    //           <tr>
+    //               <td>${ index+1 }</td>
+    //               <td>${ formatAMPM(new Date(val['created_at'])) }</td>
+    //               <td>${val['activity']}</td>
+    //               <td>${val['label']}</td>
+    //           </tr>
               
-              `);
-          });
-          // $('.modal-title').html(data[0].user.name +'('+data[0].user.student_id+')');
-          // $('#dept_batch').html(data.dept_batch);
-          // $('#body').html(data.message);
-          $('#userLocationModal').modal('show');
-        }
-      });
+    //           `);
+    //       });
+    //       // $('.modal-title').html(data[0].user.name +'('+data[0].user.student_id+')');
+    //       // $('#dept_batch').html(data.dept_batch);
+    //       // $('#body').html(data.message);
+    //       $('#userLocationModal').modal('show');
+    //     }
+    //   });
 
-      function browserInfo(browserInformation){
-        var data = '<strong>';
+    //   function browserInfo(browserInformation){
+    //     var data = '<strong>';
 
-            data+= browserInformation.browserName;
-            data+= '</strong> on <strong>';
-            data+= browserInformation.platformName;
-            data+= '</strong> From <strong>';
-            data+= getDeviceType(browserInformation);
-            data+= '</strong>';
-        return data;
-      }
+    //         data+= browserInformation.browserName;
+    //         data+= '</strong> on <strong>';
+    //         data+= browserInformation.platformName;
+    //         data+= '</strong> From <strong>';
+    //         data+= getDeviceType(browserInformation);
+    //         data+= '</strong>';
+    //     return data;
+    //   }
 
-      function getDeviceType(browserInformation){
-        if(browserInformation.isMobile)
-        {
-          return 'Mobile('+browserInformation.deviceFamily+')';
-        }
-        else if(browserInformation.isDesktop)
-        {
-          return 'Desktop/Laptop';
-        }
-        else if(browserInformation.isTablet)
-        {
-          return 'Tablet('+browserInformation.deviceFamily+')';
-        }
-        else if(browserInformation.isBot)
-        {
-          return 'Bot';
-        }
-        else{
-          return 'Unable to detect';
-        }
-      }
-
-
+    //   function getDeviceType(browserInformation){
+    //     if(browserInformation.isMobile)
+    //     {
+    //       return 'Mobile('+browserInformation.deviceFamily+')';
+    //     }
+    //     else if(browserInformation.isDesktop)
+    //     {
+    //       return 'Desktop/Laptop';
+    //     }
+    //     else if(browserInformation.isTablet)
+    //     {
+    //       return 'Tablet('+browserInformation.deviceFamily+')';
+    //     }
+    //     else if(browserInformation.isBot)
+    //     {
+    //       return 'Bot';
+    //     }
+    //     else{
+    //       return 'Unable to detect';
+    //     }
+    //   }
 
 
-      function formatAMPM(date) {
-        var day = date.getDate();
-        var month = date.getMonth();
-        var year = date.getFullYear();
-        var hours = date.getHours();
-        var minutes = date.getMinutes();
-        var ampm = hours >= 12 ? 'pm' : 'am';
-        hours = hours % 12;
-        hours = hours ? hours : 12; // the hour '0' should be '12'
-        minutes = minutes < 10 ? '0'+minutes : minutes;
-        var strTime = day+'-'+month+'-'+year+'('+ hours + ':' + minutes + ' ' + ampm+')';
-        return strTime;
-      }
-    });
+
+
+    //   function formatAMPM(date) {
+    //     var day = date.getDate();
+    //     var month = date.getMonth();
+    //     var year = date.getFullYear();
+    //     var hours = date.getHours();
+    //     var minutes = date.getMinutes();
+    //     var ampm = hours >= 12 ? 'pm' : 'am';
+    //     hours = hours % 12;
+    //     hours = hours ? hours : 12; // the hour '0' should be '12'
+    //     minutes = minutes < 10 ? '0'+minutes : minutes;
+    //     var strTime = day+'-'+month+'-'+year+'('+ hours + ':' + minutes + ' ' + ampm+')';
+    //     return strTime;
+    //   }
+    // });
     
   });
 </script>

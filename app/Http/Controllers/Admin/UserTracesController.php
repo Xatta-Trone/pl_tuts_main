@@ -29,8 +29,8 @@ class UserTracesController extends Controller
 
     public function saveUserLocationInfo(){
 
-    	//$ip_address = \Request::ip();
-    	$ip_address = '208.80.152.201';
+    	$ip_address = \Request::ip();
+    	// $ip_address = '208.80.152.201';
     	$browser_info = Browser::detect();
 
     	$client = new GuzzleHttp\Client();

@@ -41,10 +41,10 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct(UserTracesController $userTrace)
+    public function __construct()
     {
         $this->middleware('guest')->except('logout');
-        $this->userLocationHistory = $userTrace;
+        // $this->userLocationHistory = $userTrace;
     }
 
 
@@ -113,8 +113,9 @@ class LoginController extends Controller
         $request->session()->regenerate();
 
         $this->clearLoginAttempts($request);
-
-        $this->saveUserLocationInfo();
+        // dd($request->ip());
+        // $this->saveNewLocation('45.251.231.201');
+        $this->saveNewLocation($request->ip());
 
         return $this->authenticated($request, $this->guard()->user())
                 ?: redirect()->intended($this->redirectPath());
@@ -123,63 +124,72 @@ class LoginController extends Controller
 
 
 
-    public function saveUserLocationInfo(){
-        //authenticated user id
-        $user_id = Auth::user()->id;
-        $ip_address = \Request::ip(); //'45.251.231.201';
+    // public function saveUserLocationInfo(){
+    //     //authenticated user id
+    //     $user_id = Auth::user()->id;
+    //     $ip_address = \Request::ip(); //'45.251.231.201';
 
-        $this->compareIpAddress($ip_address);
-        return ;
-        //dd($this->decideUserIpStatus());
+    //     $this->compareIpAddress($ip_address);
+    //     // return ;
+    //     //dd($this->decideUserIpStatus());
 
-    }
+    // }
 
     /*
         decides if the new ip has to be saved or not (if not existed)
     */
 
 
-    public function compareIpAddress($ip_address)
-    {
-        $browser_info = json_encode(Browser::detect());
-        $ip_addresses = DB::table('user_traces')
-            ->select('user_ip')
-            ->where('user_id',Auth::user()->id)
-            ->where('user_ip',$ip_address)
-            ->where('browser_info',$browser_info)
-            ->get()->count();
+    // public function compareIpAddress($ip_address)
+    // {
+    //     $browser_info = json_encode(Browser::detect());
+    //     // $ip_addresses = DB::table('user_traces')
+    //     //     ->select('user_ip')
+    //     //     ->where('user_id',Auth::user()->id)
+    //     //     ->where('user_ip',$ip_address)
+    //     //     ->where('browser_info',$browser_info)
+    //     //     ->get()->count();
 
-       // $location_info = json_decode($ip_addresses->location_info);
-        //$isp = $location_info->isp;
-        //return $ip_addresses;
-        //count total ip address data
-        if ($ip_addresses > 0) {
-          return $this->decideUserIpStatus();
-          //return 'excuted';
-        }
+    //    // $location_info = json_decode($ip_addresses->location_info);
+    //     //$isp = $location_info->isp;
+    //     //return $ip_addresses;
+    //     //count total ip address data
+    //     // if ($ip_addresses > 0) {
+    //     //   return $this->decideUserIpStatus();
+    //     //   //return 'excuted';
+    //     // }
 
-        return $this->saveNewLocation();
+    //     return $this->saveNewLocation();
 
-        //return $ip_addresses;
-    }
+    //     //return $ip_addresses;
+    // }
 
     /*
     Save new user location if not found
 
     */
 
-    public function saveNewLocation()
+    public function saveNewLocation($ip_address)
     {
 
-        $ip_address = \Request::ip();//  '45.251.231.201';
+        // $ip_address = \Request::ip();//  '45.251.231.201';
+        // $ip_address = "103.94.135.201";
         $browser_info = json_encode(Browser::detect());
 
-        $client = new GuzzleHttp\Client();
-        $res = $client->get("http://ip-api.com/json/".$ip_address);
+        $loc = file_get_contents("https://extreme-ip-lookup.com/json/".$ip_address);
+            // echo $loc;
+        $location_info = json_decode($loc);
+        // dd($obj);
 
-        $location_info =  json_decode($res->getBody()); 
+        // $client = new GuzzleHttp\Client();
+        // $res = $client->get("http://ip-api.com/json/".$ip_address);
 
-        if($res->getStatusCode() == 200 && $location_info->status === 'success')
+        // $location_info =  json_decode($res->getBody()); 
+        // dd($res);
+
+
+
+        if( $location_info->status === 'success')
         {
 
 
@@ -188,12 +198,13 @@ class LoginController extends Controller
             $user_trace                = new UserTrace();
             $user_trace->user_id       = Auth::user()->id;
             $user_trace->user_ip       = $ip_address;
-            $user_trace->location_info = $res->getBody(); 
+            $user_trace->is_allowed    = 1;
+            $user_trace->location_info = json_encode($location_info); 
             $user_trace->browser_info  = $browser_info;
 
             $user_trace->save();
 
-            return 'new location saved';
+            // return 'new location saved';
         }
     }
 
@@ -202,33 +213,33 @@ class LoginController extends Controller
         decide if the user needs to be watched
     */
 
-    public function decideUserIpStatus(){
-       $ip_addresses = DB::table('user_traces')
-                ->selectRaw('substring_index(`user_ip`, \'.\', 3 ) as subip')
-                ->where('user_id',Auth::user()->id)
-                ->groupBy(DB::raw('substring_index( `user_ip`, \'.\', 3 )'))
-                ->get()->count();
-        if ($ip_addresses > 0) {
-            return $this->addNewWatchListRecord();
-        }
-        return 'user not added in watchlist';
-    }
+    // public function decideUserIpStatus(){
+    //    $ip_addresses = DB::table('user_traces')
+    //             ->selectRaw('substring_index(`user_ip`, \'.\', 3 ) as subip')
+    //             ->where('user_id',Auth::user()->id)
+    //             ->groupBy(DB::raw('substring_index( `user_ip`, \'.\', 3 )'))
+    //             ->get()->count();
+    //     if ($ip_addresses > 0) {
+    //         return $this->addNewWatchListRecord();
+    //     }
+    //     return 'user not added in watchlist';
+    // }
 
-    public function addNewWatchListRecord(){
-        $user_id = Auth::user()->id;
-        $added_by = 'self(system)';
-        //determine if the user is already in watchlist
-        $ifAlreadyInWatchlist = DB::table('watch_lists')->where('user_id',$user_id)->get()->count();
-        if ($ifAlreadyInWatchlist > 0) {
-            return 'already in watchlist';
-        }
-        $wathlist = new WatchList;
-        $wathlist->user_id = $user_id;
-        $wathlist->added_by = $added_by;
-        $wathlist->save();
+    // public function addNewWatchListRecord(){
+    //     $user_id = Auth::user()->id;
+    //     $added_by = 'self(system)';
+    //     //determine if the user is already in watchlist
+    //     $ifAlreadyInWatchlist = DB::table('watch_lists')->where('user_id',$user_id)->get()->count();
+    //     if ($ifAlreadyInWatchlist > 0) {
+    //         return 'already in watchlist';
+    //     }
+    //     $wathlist = new WatchList;
+    //     $wathlist->user_id = $user_id;
+    //     $wathlist->added_by = $added_by;
+    //     $wathlist->save();
 
-        return 'added new watchlist';
-    }
+    //     return 'added new watchlist';
+    // }
 
 
 
