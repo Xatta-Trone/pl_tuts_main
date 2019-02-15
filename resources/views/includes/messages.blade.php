@@ -28,7 +28,7 @@
 	</div>
 @endif
 @if(session()->has('warning'))
-	<div class="callout callout-warning">
+	<div class="callout callout-warning alert-danger alert">
 	  <h4>Warning!</h4>
 	  {{ session('warning') }}
 	</div>

@@ -25,7 +25,7 @@ Route::group(['namespace'=>'User'],function(){
 
 
 	Route::get('/departments','NavigationsController@departments')->name('departments');
-	Route::get('/departments/{dept}/{level_term?}/{course?}','NavigationsController@navUrl')->name('singleDept');
+	Route::get('/departments/{dept}/{level_term?}/{course?}','NavigationsController@navUrl')->name('singleDept')->middleware('checkdept');
 	Route::post('/email_available/', 'EmailAvailable@check')->name('email_available.check');
 	Route::post('/getPostData/', 'EmailAvailable@getSearchData')->name('getSearchData');
 	Route::post('/customPasswordChange/', 'EmailAvailable@customPasswordChange')->name('customPasswordChange');

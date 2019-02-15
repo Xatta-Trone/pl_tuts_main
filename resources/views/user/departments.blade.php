@@ -17,6 +17,15 @@
 	<div class="section_padding content_section">
 		<div class="container">
 			<div class="row">
+				@if(session()->has('warning'))
+				<div class="col-sm-12 d-inline-block" style="height: auto;min-height: auto!important;">
+					<div class="alert-danger alert">
+					  <h4>Warning!</h4>
+					  {!! session('warning') !!}
+					</div>
+				</div>
+				@endif
+
 				@if ($departments->count() > 0)
 					@foreach ($departments as $department)
 						<div class="col-lg-4 col-md-6">
