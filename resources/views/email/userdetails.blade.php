@@ -58,8 +58,8 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-12 col-sm-10 col-md-6 mx-auto">
-				<div class="main_message">
-					<p>One request, Please do not share the links outside of buet/non-buetians. Otherwise the system may deactivate your account.</p>
+				<div class="main_message last">
+					<p><span>One request, Please do not share the links outside of buet/non-buetians. Otherwise the system will deactivate your account.</span></p>
 				</div>
 			</div>
 		</div>
