@@ -185,6 +185,8 @@ return [
         Stevebauman\Location\LocationServiceProvider::class,
         hisorange\BrowserDetect\ServiceProvider::class,
         \Torann\GeoIP\GeoIPServiceProvider::class,
+        \Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
+          Spatie\Fractal\FractalServiceProvider::class,
 
     ],
 
@@ -245,6 +247,8 @@ return [
         'Location' => Stevebauman\Location\Facades\Location::class,
         'Browser' => \hisorange\BrowserDetect\Facade::class,
         'GeoIP' => \Torann\GeoIP\Facades\GeoIP::class,
+        'JWTAuth' => \Tymon\JWTAuth\Facades\JWTAuth::class,
+        'Fractal' => Spatie\Fractal\FractalFacade::class,
 
     ],
 
