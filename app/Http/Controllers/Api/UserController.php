@@ -112,4 +112,9 @@ class UserController extends Controller
         }
         return response('false');
     }
+
+    public function resetpassword(Request $request)
+    {
+        return $request->all();
+    }
 }
