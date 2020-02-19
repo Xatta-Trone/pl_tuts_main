@@ -176,15 +176,15 @@ class LoginController extends Controller
         // $ip_address = "103.94.135.201";
         $browser_info = json_encode(Browser::detect());
 
-        $loc = file_get_contents("https://extreme-ip-lookup.com/json/".$ip_address);
+        //$loc = file_get_contents("https://extreme-ip-lookup.com/json/".$ip_address);
             // echo $loc;
-        $location_info = json_decode($loc);
-        // dd($obj);
+        //$location_info = json_decode($loc);
+        /// dd($obj);
 
-        // $client = new GuzzleHttp\Client();
-        // $res = $client->get("http://ip-api.com/json/".$ip_address);
+         $client = new GuzzleHttp\Client();
+        $res = $client->get("http://ip-api.com/json/".$ip_address);
 
-        // $location_info =  json_decode($res->getBody()); 
+        $location_info =  json_decode($res->getBody()); 
         // dd($res);
 
 
@@ -198,7 +198,7 @@ class LoginController extends Controller
             $user_trace                = new UserTrace();
             $user_trace->user_id       = Auth::user()->id;
             $user_trace->user_ip       = $ip_address;
-            $user_trace->is_allowed    = 1;
+            $user_trace->is_allowed    = 0;
             $user_trace->location_info = json_encode($location_info); 
             $user_trace->browser_info  = $browser_info;
 
