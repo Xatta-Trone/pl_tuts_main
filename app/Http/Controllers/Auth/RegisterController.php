@@ -55,53 +55,58 @@ class RegisterController extends Controller
         $validated_data  = $this->validateUserData($request->all());
         $validated_data =  (array) $validated_data;
         //dd($validated_data);
-        if($validated_data['message'] == 'duplicate'){
+        if ($validated_data['message'] == 'duplicate') {
             $hall_names = DB::table('userdatas')->distinct()->get(['hall_name']);
-            return view('user.register')->with('custom_error', 'There is a user already with this student id')->with('hall_names',$hall_names);
-        }
-        elseif ($validated_data['message'] == 'false') {
-           $hall_names = DB::table('userdatas')->distinct()->get(['hall_name']);
-            return view('user.register')->with('custom_error', 'We did not found any match with provided data. Please provide correct data.')->with('hall_names',$hall_names);
-        }else{
-            
+            return view('user.register')->with('custom_error', 'There is a user already with this student id')->with('hall_names', $hall_names);
+        } elseif ($validated_data['message'] == 'false') {
+            $hall_names = DB::table('userdatas')->distinct()->get(['hall_name']);
+            return view('user.register')->with('custom_error', 'We did not found any match with provided data. Please provide correct data.')->with('hall_names', $hall_names);
+        } else {
             event(new Registered($user = $this->create($validated_data)));
 
-             //$this->guard()->login($user);
-             return redirect()->route('checkemail');
+            //$this->guard()->login($user);
+            return redirect()->route('checkemail');
 
-             return $this->registered($request, $user)
+            return $this->registered($request, $user)
                              ?: redirect($this->redirectPath());
         }
-        
     }
 
-    public function validateUserData($data){
+    public function validateUserData($data)
+    {
         $name = $data['name'];
         $email = $data['email'];
         $student_id = $data['student_id'];
-        $merit = $data['type'].sprintf("%04d",$data['merit_position']);
+        $merit = $data['type'].sprintf("%04d", $data['merit_position']);
         $hall_name = $data['hall_name'];
         //dd($hall_name);exit;
+        $student_id_batch = (int) substr($student_id, 3, 2);
+
+       
+
+        
 
         if (!$this->checkExistingUser($student_id)) {
-
-            $userDataFromDB = DB::table('userdatas')->where([['student_id','=',$student_id],['merit','=',$merit],['hall_name','=',$hall_name]])->orWhere([['student_id','=',$student_id],['merit','=',$merit],['student_name','like','%'.$name.'%']])->get()->first();
+            if ($student_id_batch == 19) {
+                $userDataFromDB = DB::table('userdatas')->where([['student_id','=',$student_id],['merit','=',$merit],['hall_name','=',$hall_name]])->orWhere([['student_id','=',$student_id],['hall_name','=',$hall_name],['student_name','like','%'.$name.'%']])->get()->first();
+            } else {
+                $userDataFromDB = DB::table('userdatas')->where([['student_id','=',$student_id],['merit','=',$merit],['hall_name','=',$hall_name]])->orWhere([['student_id','=',$student_id],['merit','=',$merit],['student_name','like','%'.$name.'%']])->get()->first();
+            }
             //dd($userDataFromDB);exit;
 
-            if ($userDataFromDB != NULL) {
+            if ($userDataFromDB != null) {
                 $userDataFromDB->email = $email;
                 $userDataFromDB->password = Str::random(8);
                 $userDataFromDB->message = 'true';
                 return $userDataFromDB;
-            }else{
+            } else {
                 $userDataFromDB = (object) array('message'=>'false');
                 return $userDataFromDB;
             }
-        }else{
+        } else {
             $userDataFromDB = (object) array('message'=>'duplicate');
             return $userDataFromDB;
         }
-        
     }
 
     /**
@@ -129,13 +134,13 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-       // dd($data);
+        // dd($data);
         $userData =  User::create([
             'name' => $data['student_name'],
             'email' => $data['email'],
-            'student_id' => substr($data['student_id'],3),
+            'student_id' => substr($data['student_id'], 3),
             'status' => 1,
-            'user_letter' => substr($this->userLetter($data['student_name']),0,1),
+            'user_letter' => substr($this->userLetter($data['student_name']), 0, 1),
             'password' => bcrypt($data['password']),
         ]);
         //dd($userData);
@@ -157,49 +162,52 @@ class RegisterController extends Controller
         SEOMeta::setTitle('Register');
         OpenGraph::setTitle('Register');
         $hall_names = DB::table('userdatas')->distinct()->get(['hall_name']);
-        return view('user.register')->with('hall_names',$hall_names);
+        return view('user.register')->with('hall_names', $hall_names);
     }
-    public function sendEmail($user){
+    public function sendEmail($user)
+    {
         Mail::to($user['email'])->send(new loginDetails($user));
     }
 
-    public function checkemail(){
+    public function checkemail()
+    {
         return view('user.checkemail');
     }
-    public function setUserDataStatus($user){
+    public function setUserDataStatus($user)
+    {
         $user = Userdata::find($user);
         $user->status = 1;
         $user->save();
     }
 
-    public function checkExistingUser($student_id){
+    public function checkExistingUser($student_id)
+    {
         $student_id = $this->studentIdWithoutPrefix($student_id);
         //dd($student_id);
-        $result = DB::table('users')->where('student_id',$student_id)->get()->count();
+        $result = DB::table('users')->where('student_id', $student_id)->get()->count();
         if ($result > 0) {
-           return true;
-        }else{
+            return true;
+        } else {
             return false;
         }
     }
 
 
-    public function studentIdWithoutPrefix($student_id){
+    public function studentIdWithoutPrefix($student_id)
+    {
         $student_id = strtolower($student_id);
-        return (substr($student_id,0,1) == 's') ? substr($student_id,3) : $student_id;
+        return (substr($student_id, 0, 1) == 's') ? substr($student_id, 3) : $student_id;
     }
 
-    public function userLetter($name = ''){
-        $array = explode(" ",$name);
-        if(count($array) == 1){
+    public function userLetter($name = '')
+    {
+        $array = explode(" ", $name);
+        if (count($array) == 1) {
             return $array[0];
-        }elseif($array[0] != 'Md' && $array[0] != 'Md.' && $array[0] != 'Mohammad'){
+        } elseif ($array[0] != 'Md' && $array[0] != 'Md.' && $array[0] != 'Mohammad') {
             return $array[0];
-        }
-        else{
+        } else {
             return $array[1];
         }
     }
-
-
 }
